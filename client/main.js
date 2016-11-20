@@ -1,7 +1,31 @@
 import React, { Component } from 'react';
+import {Mongo} from 'meteor/mongo';
 import ReactDOM from 'react-dom';
 import LoadForm from './components/load_form';
 import LoadData from '../imports/collections/load_data';
+
+// Meteor templates - a test
+SimplePeak = new Mongo.Collection('SimplePeak');
+if (Meteor.isClient) {
+  Template.simplestform.helpers({
+    'demo': function(){
+      return peak.value;
+    }
+  });
+}
+
+//  11/20: This is accomplishing everything except getting the data on the damn screen. Promise maybe.
+Template.simplestform.events({
+  'submit form': function(event) {
+    event.preventDefault();
+    var PeakLoadVar = event.target.peak.value;
+    console.log("Peak Load is: " + PeakLoadVar);
+    SimplePeak.insert({
+      "peakload": PeakLoadVar
+    });
+    event.target.peak.value = 0;
+  }
+});
 
 // Components go here
 // Create a component
@@ -23,7 +47,7 @@ class App extends Component {
     return (
       // Form component while passing through the props titled 'this.state.loads'
       <div>
-         <LoadForm loads={this.state.loads}/>
+         <LoadForm />
       </div>
     );
   }

@@ -1,9 +1,10 @@
 import {Mongo} from 'meteor/mongo';
 
 // Create seeds collection
-const LoadData = new Mongo.Collection('loadData');
+LoadData = new Mongo.Collection('loadData');
 
 LoadData.insert({
+  "peakload": 0,
   "presets": {
     "name": "College",
     "hours": {
