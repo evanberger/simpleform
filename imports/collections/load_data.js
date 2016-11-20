@@ -1,9 +1,11 @@
 import {Mongo} from 'meteor/mongo';
 
 // Create seeds collection
-LoadData = new Mongo.Collection('loadData');
 
-LoadData.insert({
+Meteor.methods({
+//Method one
+'loadData.insert': function() {
+  return LoadData.insert({
   "peakload": 0,
   "presets": {
     "name": "College",
@@ -64,5 +66,7 @@ LoadData.insert({
     }
   }
 });
+}
+});
 
-export {LoadData};
+export const LoadData = new Mongo.Collection('loadData');
