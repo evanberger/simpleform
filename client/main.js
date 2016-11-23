@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import {Mongo} from 'meteor/mongo';
 import ReactDOM from 'react-dom';
 import LoadForm from './components/load_form';
+import Table from './components/table';
 import {LoadData} from '../imports/collections/load_data';
-
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 
 
 // Components go here
@@ -15,7 +16,7 @@ class App extends Component {
 
     // Initializing state as an empty array
     // State's role is essentially to determine rerenders
-    this.state = {"loads": []};
+    this.state = {"preset": []};
   }
   componentWillMount(){
     // This is the place to add the Mongo-based seed data
@@ -25,40 +26,18 @@ class App extends Component {
   }
   render(){
     return (
-      // Form component while passing through the props titled 'this.state.loads'
+      // Form component while passing through the props titled 'this.state.presets'
       <div>
          <LoadForm />
+         <Table />
       </div>
     );
   }
 };
 
-// Meteor templates - a test
-SimplePeak = new Mongo.Collection('SimplePeak');
-if (Meteor.isClient) {
-  Template.simplestform.helpers({
-    'demo': function(){
-      return peak.value;
-    }
-  });
-}
 
-//  11/20: This is accomplishing everything except getting the data on the damn screen. Promise maybe.
-Template.simplestform.events({
-  'submit form': function(event) {
-    event.preventDefault();
-    var PeakLoadVar = event.target.peak.value;
-    console.log("Peak Load is: " + PeakLoadVar);
-    SimplePeak.insert({
-      "peakload": PeakLoadVar
-    });
-    event.target.peak.value = 0;
-  }
-});
-
-// After Meteor loads in the browser, render my app to the DOM.
+// After Meteor loads in the browser, render the app to the DOM.
 Meteor.startup(() => {
   // React render call
   ReactDOM.render(<App />, document.querySelector('.container'));
-  console.log("I'm here");
 });

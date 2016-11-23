@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
+// import LoadData from '../imports/collections/load_data';
 
 // Create our component
-// Open question (Nov19): how do we now use refs, or props??
 class LoadForm extends Component {
-  onFormClick() {
+  onFormClick(event) {
     event.preventDefault();
-
-    Meteor.call('loadData.insert');
-    PeakLoadVal = LoadData.find({_id: "TwSEfmZEbLjDcL7Ab"});
-    console.log(PeakLoadVal);
+    Meteor.call('loadData.insert', this.refs.peakload.value);
   }
 
   render() {
