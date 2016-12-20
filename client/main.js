@@ -1,43 +1,106 @@
-import React, { Component } from 'react';
-import {Mongo} from 'meteor/mongo';
-import ReactDOM from 'react-dom';
-import LoadForm from './components/load_form';
-import Table from './components/table';
-import {LoadData} from '../imports/collections/load_data';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+// Any JS in here is automatically ran for us
 
+// Import the React library
+var React = require('react');
+var ReactDOM = require('react-dom');
+import Collapsible from 'react-collapsible';
+var Form = require('./components/form');
+var Table = require('./components/table');
+var BuildingForm = require('./components/Bldg_Form');
 
-// Components go here
 // Create a component
-class App extends Component {
-  // Constructor method boilerplate - super calls the parent component
-  constructor(props) {
-    super(props);
-
-    // Initializing state as an empty array
-    // State's role is essentially to determine rerenders
-    this.state = {"preset": []};
-  }
-  componentWillMount(){
-    // This is the place to add the Mongo-based seed data
-    console.log("this app is about to render");
-    console.log(LoadData);
-    // console.log(LoadData.find({peakload});
-  }
-  render(){
-    return (
-      // Form component while passing through the props titled 'this.state.presets'
+var App = React.createClass({
+  getInitialState: function() {
+    return {
+      load: 0,
+      profile: '',
+      name: '',
+      existingRate: '',
+      iceStorageRate: '',
+      chillerType: '',
+      coolingMonths: 8,
+      chillerTonnage: 0,
+      standardChillerEfficiency: 0,
+      ddChillerEfficiency: 0,
+      iceMakingEfficiency: 0,
+      standardChillerCost: 0,
+      ddChillerCost: 0,
+      icebankCost: 0,
+      hxCost: 0,
+      rebate: 0,
+      addlIceCost: 0,
+      taxes: 0,
+      downsizePipeSavings: 0,
+      downsizeDuctSavings: 0,
+      roundDuctSavings: 0
+    };
+  },
+  handleFormSubmit: function(submittedData) {
+    var newData = {
+      load: submittedData.load,
+      profile: submittedData.profile
+    }
+    this.setState({load: newData.load * 100, profile: newData.profile});
+  },
+  handleBuildingFormSubmit: function(submittedData) {
+    var newData = {
+      name: submittedData.name,
+      existingRate: submittedData.existingRate,
+      iceStorageRate:submittedData.iceStorageRate,
+      chillerType:submittedData.chillerType,
+      coolingMonths: submittedData.coolingMonths,
+      chillerTonnage: submittedData.chillerTonnage,
+      standardChillerEfficiency: submittedData.standardChillerEfficiency,
+      ddChillerEfficiency: submittedData.ddChillerEfficiency,
+      iceMakingEfficiency:submittedData.iceMakingEfficiency,
+      standardChillerCost: submittedData.standardChillerCost,
+      ddChillerCost:submittedData.icemakingChillerCost,
+      icebankCost: submittedData.icebankCost,
+      hxCost:submittedData.hxCost,
+      rebate: submittedData.rebate,
+      addlIceCost: submittedData.addlIceCost,
+      downsizePipeSavings: submittedData.downsizePipeSavings,
+      downsizeDuctSavings: submittedData.downsizeDuctSavings,
+      roundDuctSavings: submittedData.roundDuctSavings
+    }
+    this.setState({
+      name: newData.name,
+      existingRate: newData.existingRate,
+      iceStorageRate:newData.iceStorageRate,
+      chillerType:newData.chillerType,
+      coolingMonths: newData.coolingMonths,
+      chillerTonnage: newData.chillerTonnage,
+      standardChillerEfficiency: newData.standardChillerEfficiency,
+      ddChillerEfficiency: newData.ddChillerEfficiency,
+      iceMakingEfficiency:newData.iceMakingEfficiency,
+      standardChillerCost: newData.standardChillerCost,
+      ddChillerCost:newData.icemakingChillerCost,
+      icebankCost: newData.icebankCost,
+      hxCost:newData.hxCost,
+      rebate: newData.rebate,
+      addlIceCost: newData.addlIceCost,
+      downsizePipeSavings: newData.downsizePipeSavings,
+      downsizeDuctSavings: newData.downsizeDuctSavings,
+      roundDuctSavings: newData.roundDuctSavings
+    });
+  },
+  render: function () {
+      return (
       <div>
-         <LoadForm />
-         <Table />
+        <div className="col-xs-6">
+          <Form onFormSubmit={this.handleFormSubmit} />
+           <div>-------------------</div>
+           <Table load={this.state.load} profile={this.state.profile} />
+        </div>
+        <div className="col-xs-6">
+          <BuildingForm onFormSubmit={this.handleBuildingFormSubmit} />
+        </div>
       </div>
     );
-  }
-};
+    }
+  });
 
-
-// After Meteor loads in the browser, render the app to the DOM.
+// Render this component to the screen
 Meteor.startup(() => {
-  // React render call
   ReactDOM.render(<App />, document.querySelector('.container'));
 });
