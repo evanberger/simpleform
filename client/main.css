@@ -1,1 +1,26 @@
 /* CSS declarations go here */
+table {
+  outline: 1px solid blue;
+}
+
+.Collapsible__trigger {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333333;
+  position: relative;
+  border: 1px solid white;
+  padding: 10px;
+  background: steelblue;
+  color: white;
+}
+.Collapsible__trigger:after {
+    font-family: 'FontAwesome';
+    content: '\f107';
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    display: block;
+    transition: transform 300ms;
+  }
